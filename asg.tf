@@ -3,7 +3,7 @@ resource "aws_autoscaling_group" "asg" {
   max_size                  = 3
   min_size                  = 1
   health_check_grace_period = 300
-  health_check_type         = "ELB"
+  health_check_type         = "EC2"
   desired_capacity          = "${var.instance_count}"
   
   instance_refresh {
@@ -57,7 +57,6 @@ resource "aws_launch_template" "lt" {
     consul_binary         = var.consul_binary,
     consul_namespace      = var.consul_namespace,
     consul_agent_token    = var.consul_agent_token,
-    consul_retry_join     = var.consul_retry_join,
     instance_count        = var.instance_count,
     target_groups         = var.target_groups,
   }))
