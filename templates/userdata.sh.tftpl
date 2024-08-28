@@ -147,6 +147,37 @@ template {
 }
 EOF
 
+cat <<EOF > /etc/systemd/system/vault-agent.service
+[Unit]
+Description="HashiCorp Vault Agent - A tool for managing secrets"
+Documentation=https://developer.hashicorp.com/vault/docs
+Requires=network-online.target
+After=network-online.target
+ConditionFileNotEmpty=/etc/vault-agent.d/config.hcl
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=notify
+User=root
+Group=root
+ExecStart=/usr/bin/vault agent -config=/etc/vault-agent.d/config.hcl
+ExecReload=/bin/kill --signal HUP $MAINPID
+KillMode=process
+KillSignal=SIGINT
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+LimitNOFILE=65536
+LimitMEMLOCK=infinity
+LimitCORE=0
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl enable --now vault-agent
+
 echo "Creating ESM Config"
 mkdir /etc/consul-esm.d
 
