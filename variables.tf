@@ -27,24 +27,24 @@ variable "private_subnets" {
 
 variable "instance_count" {
   description = "The number of frontend app instances in the ASG"
-  default = 1
+  default     = 1
 }
 
 variable "target_groups" {
   description = "List of target groups"
-  type    = list(string)
-  default = [""]
+  type        = list(string)
+  default     = [""]
 }
 
 
 ## Consul configuration
 variable "consul_token" {
   description = "The Consul ACL token"
-  default = "root"
+  default     = "root"
 }
 variable "consul_license" {
   description = "The Consul License Key if using enterprise"
-  default = ""
+  default     = ""
 }
 variable "consul_version" {
   default = "1.18.2"
@@ -63,7 +63,7 @@ variable "consul_datacenter" {
 }
 variable "consul_partition" {
   description = "The Consul admin partition this agent should be part of"
-  default = "default"
+  default     = "default"
 }
 
 variable "consul_encryption_key" {
@@ -73,10 +73,25 @@ variable "consul_agent_ca" {}
 
 variable "consul_agent_token" {
   description = "The Consul Agent and Default token"
-  default = "root"
+  default     = "root"
 }
 
 variable "consul_esm_version" {
   description = "The version of the Consul ESM to install"
   default     = "0.8.0"
+}
+
+variable "consul_esm_kv_path" {
+  description = "The Consul ESM KV path to use"
+  default     = "consul-esm"
+}
+
+variable "consul_esm_service_name" {
+  description = "The Consul ESM service name to use"
+  default     = "consul-esm"
+}
+
+variable "consul_esm_partition" {
+  description = "The Consul partition to monitor"
+  default     = "default"  
 }

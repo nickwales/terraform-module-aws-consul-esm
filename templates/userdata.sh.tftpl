@@ -193,9 +193,9 @@ log_level = "INFO"
 enable_syslog = false
 log_json = false
 instance_id = ""
-consul_service = "consul-esm"
+consul_service = "${consul_esm_service_name}"
 consul_service_tag = ""
-consul_kv_path = "consul-esm/"
+consul_kv_path = "${consul_esm_kv_path}/"
 external_node_meta {
     "external-node" = "true"
 }
@@ -204,6 +204,7 @@ node_probe_interval = "10s"
 disable_coordinate_updates = false
 http_addr = "localhost:8500"
 datacenter = "dc1"
+partition = "${consul_esm_partition}"
 ca_path = "/etc/consul.d/certs/"
 cert_file = ""
 key_file = ""

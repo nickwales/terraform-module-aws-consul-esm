@@ -23,23 +23,23 @@ resource "aws_iam_role" "role" {
 }
 
 resource "aws_iam_role_policy" "policy" {
-    name_prefix = "esm-${var.name}-${var.consul_datacenter}"
+  name_prefix = "esm-${var.name}-${var.consul_datacenter}"
 
-    role = aws_iam_role.role.id
-    policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [
-          {
-            Action = [
-                "ec2:DescribeInstances",
-                "ec2:DescribeTags",
-                "autoscaling:DescribeAutoScalingGroups",
-            ]
-            Effect = "Allow"
-            Resource = "*"
-          },
+  role = aws_iam_role.role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ec2:DescribeInstances",
+          "ec2:DescribeTags",
+          "autoscaling:DescribeAutoScalingGroups",
         ]
-    })
+        Effect = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "read-only-attach" {

@@ -4,20 +4,20 @@ resource "aws_autoscaling_group" "asg" {
   min_size                  = 1
   health_check_grace_period = 300
   health_check_type         = "EC2"
-  desired_capacity          = "${var.instance_count}"
-  
+  desired_capacity          = var.instance_count
+
   instance_refresh {
-    strategy               = "Rolling"
+    strategy = "Rolling"
     preferences {
-      min_healthy_percentage = 0  
+      min_healthy_percentage = 0
     }
   }
   launch_template {
     id = aws_launch_template.lt.id
   }
-  
-  target_group_arns         = var.target_groups
-  vpc_zone_identifier       = var.private_subnets
+
+  target_group_arns   = var.target_groups
+  vpc_zone_identifier = var.private_subnets
 
   tag {
     key                 = "Name"
@@ -28,7 +28,7 @@ resource "aws_autoscaling_group" "asg" {
 
 resource "aws_launch_template" "lt" {
   instance_type = "t3.small"
-  image_id = data.aws_ami.ubuntu.id
+  image_id      = data.aws_ami.ubuntu.id
 
   iam_instance_profile {
     name = aws_iam_instance_profile.profile.name
@@ -41,25 +41,28 @@ resource "aws_launch_template" "lt" {
       Name = "esm-${var.name}-${var.consul_datacenter}",
       role = "${var.name}-${var.consul_datacenter}",
     }
-  }  
+  }
   update_default_version = true
 
-  user_data = base64encode(templatefile("${path.module}/templates/userdata.sh.tftpl", { 
-    name                  = var.name,
-    service_tags          = jsonencode(var.service_tags),
-    consul_datacenter     = var.consul_datacenter, 
-    consul_partition      = var.consul_partition,
-    consul_version        = var.consul_version,
-    consul_token          = var.consul_token,
-    consul_encryption_key = var.consul_encryption_key,
-    consul_license        = var.consul_license,
-    consul_agent_ca       = var.consul_agent_ca,
-    consul_binary         = var.consul_binary,
-    consul_namespace      = var.consul_namespace,
-    consul_agent_token    = var.consul_agent_token,
-    consul_esm_version    = var.consul_esm_version,
-    instance_count        = var.instance_count,
-    target_groups         = var.target_groups,
+  user_data = base64encode(templatefile("${path.module}/templates/userdata.sh.tftpl", {
+    name                    = var.name,
+    service_tags            = jsonencode(var.service_tags),
+    consul_datacenter       = var.consul_datacenter,
+    consul_partition        = var.consul_partition,
+    consul_version          = var.consul_version,
+    consul_token            = var.consul_token,
+    consul_encryption_key   = var.consul_encryption_key,
+    consul_license          = var.consul_license,
+    consul_agent_ca         = var.consul_agent_ca,
+    consul_binary           = var.consul_binary,
+    consul_namespace        = var.consul_namespace,
+    consul_agent_token      = var.consul_agent_token,
+    consul_esm_version      = var.consul_esm_version,
+    consul_esm_service_name = var.consul_esm_service_name,
+    consul_esm_partition    = var.consul_esm_partition,
+    consul_esm_kv_path      = var.consul_esm_kv_path,
+    instance_count          = var.instance_count,
+    target_groups           = var.target_groups,
   }))
   vpc_security_group_ids = [aws_security_group.sg.id]
 }
