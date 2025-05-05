@@ -8,7 +8,14 @@ wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor > /etc/apt/trust
 chmod go-w /etc/apt/trusted.gpg.d/hashicorp.gpg
 chmod ugo+r /etc/apt/trusted.gpg.d/hashicorp.gpg
 apt-add-repository -y "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-apt update && apt install -y unzip ${consul_binary}="${consul_version}*" consul-esm vault consul-template hashicorp-envoy haproxy jq net-tools
+apt update && apt install -y unzip ${consul_binary}="${consul_version}*" \
+  consul-esm="${consul_esm_version}" \
+  vault \
+  consul-template \
+  hashicorp-envoy \
+  haproxy \
+  jq \
+  net-tools
 
 
 # Lay down consul certificates

@@ -57,6 +57,7 @@ resource "aws_launch_template" "lt" {
     consul_binary         = var.consul_binary,
     consul_namespace      = var.consul_namespace,
     consul_agent_token    = var.consul_agent_token,
+    consul_esm_version    = var.consul_esm_version,
     instance_count        = var.instance_count,
     target_groups         = var.target_groups,
   }))
