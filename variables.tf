@@ -78,7 +78,7 @@ variable "consul_agent_token" {
 
 variable "consul_esm_version" {
   description = "The version of the Consul ESM to install"
-  default     = "0.8.0"
+  default     = "0.9.0"
 }
 
 variable "consul_esm_kv_path" {
